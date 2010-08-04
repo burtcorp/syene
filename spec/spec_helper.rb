@@ -8,3 +8,4 @@ end
 Bundler.setup
 
 require 'syene/updater'
+require 'syene/lookup'

@@ -1,0 +1,25 @@
+#!/usr/bin/env ruby
+
+$: << File.expand_path('../../lib', __FILE__)
+
+unless defined?(Bundler)
+  require 'rubygems'
+  require 'bundler'
+end
+
+Bundler.setup
+
+require 'geoip'
+require 'mongo'
+require 'syene/lookup'
+
+
+if ARGV.empty?
+  STDERR.puts('Usage: lookup <ip>')
+else
+  cities_collection = Mongo::Connection.new.db('geo').collection('cities')
+  geo_ip = GeoIP::City.new(File.expand_path('../../tmp/GeoLiteCity.dat', __FILE__))
+  lookup = Syene::Lookup.new(:collection => cities_collection, :geo_ip => geo_ip)
+  city = lookup.ip_lookup(ARGV.first)
+  puts '%s, %s' % [city[:name], city[:country_code]]
+end
