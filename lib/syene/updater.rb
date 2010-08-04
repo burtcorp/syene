@@ -3,6 +3,7 @@ require 'tmpdir'
 require 'zipruby'
 require 'fileutils'
 require 'immutable_struct'
+require 'syene/city'
 
 
 module Syene
@@ -123,16 +124,6 @@ module Syene
         :ascii_name => self[:asciiname]
       ))
     end
-  end
-
-  class City < ImmutableStruct.new(
-    :_id,
-    :name,
-    :ascii_name,
-    :location,
-    :population,
-    :country_code
-  )
   end
   
   class Downloader

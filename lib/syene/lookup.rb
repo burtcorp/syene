@@ -1,5 +1,10 @@
+require 'syene/utils'
+
+
 module Syene
   class Lookup
+    include Utils
+    
     def initialize(options={})
       @collection = options[:collection]
       @geo_ip     = options[:geo_ip]
@@ -12,16 +17,6 @@ module Syene
         symbolize_keys(@collection.find_one(:location => {'$near' => [geo_ip_result[:latitude], geo_ip_result[:longitude]]}))
       else
         nil
-      end
-    end
-    
-  private
-  
-    def symbolize_keys(h)
-      return h unless h.is_a?(Hash)
-      h.keys.inject({}) do |acc, k|
-        acc[k.to_sym] = symbolize_keys(h[k])
-        acc
       end
     end
   end
