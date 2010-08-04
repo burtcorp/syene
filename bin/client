@@ -30,7 +30,7 @@ AMQP.start do
 
   reply_key = "reply.#{id}"
   
-  waiting = if ARGV.empty? then Set.new(STDIN.readlines.map(&:chomp)) else Set.new(ARGV) end
+  waiting = if ARGV.empty? || ARGV.first == '-' then Set.new(STDIN.readlines.map(&:chomp)) else Set.new(ARGV) end
   
   queue = MQ.queue("burt.syene.replies.#{id}")
   queue.bind(exchange, :key => reply_key)
