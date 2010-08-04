@@ -9,6 +9,7 @@ gem 'json'
 gem 'geoip-c'
 
 gem 'mongo'
+gem 'bson_ext'
 
 gem 'eventmachine'
 gem 'amqp'
@@ -17,7 +18,6 @@ gem 'rack'
 gem 'sinatra'
 
 group :production do
-  gem 'bson_ext'
 end
 
 group :development do

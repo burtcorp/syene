@@ -5,7 +5,7 @@ unless defined?(Bundler)
   require 'bundler'
 end
 
-Bundler.setup
+Bundler.setup(:default, :test)
 
 
 task :default => :spec

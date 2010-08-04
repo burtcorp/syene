@@ -9,7 +9,11 @@ unless defined?(Bundler)
   require 'bundler'
 end
 
-Bundler.setup(:default)
+if ENV['RACK_ENV'] == 'production'
+  Bundler.setup(:default, :production)
+else
+  Bundler.setup(:default, :development)
+end
 
 require 'fileutils'
 require 'syene/server'

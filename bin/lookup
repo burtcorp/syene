@@ -7,7 +7,7 @@ unless defined?(Bundler)
   require 'bundler'
 end
 
-Bundler.setup
+Bundler.setup(:default, :production)
 
 require 'geoip'
 require 'mongo'
