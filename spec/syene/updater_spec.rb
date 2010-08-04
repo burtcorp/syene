@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
+require File.expand_path('../../spec_helper', __FILE__)
 require 'tmpdir'
 require 'fileutils'
 require 'zipruby'
