@@ -1,0 +1,53 @@
+#!/usr/bin/env ruby
+
+$: << File.expand_path('../../lib', __FILE__)
+
+unless defined?(Bundler)
+  require 'rubygems'
+  require 'bundler'
+end
+
+Bundler.setup
+
+require 'eventmachine'
+require 'mq'
+require 'json'
+
+
+Signal.trap('INT')  { AMQP.stop { EM.stop } }
+Signal.trap('TERM') { AMQP.stop { EM.stop } }
+
+AMQP.start do
+  channel = MQ.new
+  exchange = MQ::Exchange.new(channel, :direct, 'burt.syene')
+
+  id = rand(1_000_000_000)
+
+  reply_key = "reply.#{id}"
+  
+  waiting = if ARGV.empty? then Set.new(STDIN.readlines.map(&:chomp)) else Set.new(ARGV) end
+  
+  queue = MQ.queue("burt.syene.replies.#{id}")
+  queue.bind(exchange, :key => reply_key)
+  queue.subscribe do |headers, msg|
+    query = headers.headers[:query]
+    waiting.delete(query)
+    city = if msg == 'null' then nil else JSON.parse(msg) end
+    if city
+      puts '%s: %s, %s' % [query, city['name'], city['country_code']]
+    else
+      puts '%s: (not found)' % query
+    end
+  end
+  
+  # wait a bit, otherwise the reply queue may not have been set up
+  EM.add_timer(0.5) do
+    waiting.each do |ip|
+      exchange.publish(ip, :key => '', :headers => {:reply_key => reply_key})
+    end
+  end
+  
+  EM.add_periodic_timer(0.1) do
+    AMQP.stop { EM.stop } if waiting.empty?
+  end
+end
