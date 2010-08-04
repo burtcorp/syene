@@ -30,6 +30,8 @@ To look up an IP from the command line use the `lookup` command. It will look up
 
 The `worker` command starts a worker node that listens for messages on the `burt.syene` exchange. The routing key should be an empty string, and each message must set a header called "reply_key" to the routing key where it's listening for a reply. The reply will have a header called "query" that contains the original message. See `bin/client` for an example of how to communicate with the worker.
 
+If you start multiple instances of `worker` the queries will be distributed between them by the AMQP broker.
+
 You can use the `client` command similarly to the CLI interface:
 
     client 8.8.8.8 7.7.7.7 6.6.6.6
