@@ -1,0 +1,53 @@
+# Syene
+
+Syene is a geo location service that can map an IP address to a location.
+
+## Installation
+
+1. `gem install bundler`
+- Install `libgeoip` (`brew install geoip`, or see http://www.maxmind.com/app/c)
+- `bundle install`
+- `rake spec`
+- `rake update:geoip`
+- Make sure MongoDB is running
+- `rake update`
+
+## Usage
+
+There are three interfaces to the service: a command line interface, and AMQP worker and a REST server.
+
+Make sure that MongoDB is running before using any of the interfaces.
+
+### CLI
+
+To look up an IP from the command line use the `lookup` command. It will look up all IP numbers passed as arguments, or if no arguments are given (or the first argument is -) it will read from STDIN (each IP should be on a separate line).
+
+    lookup 8.8.8.8 7.7.7.7 6.6.6.6
+    echo 8.8.8.8 | lookup
+    cat lots_of_ips | lookup -
+
+### AMQP worker
+
+The `worker` command starts a worker node that listens for messages on the `burt.syene` exchange. The routing key should be an empty string, and each message must set a header called "reply_key" to the routing key where it's listening for a reply. The reply will have a header called "query" that contains the original message. See `bin/client` for an example of how to communicate with the worker.
+
+You can use the `client` command similarly to the CLI interface:
+
+    client 8.8.8.8 7.7.7.7 6.6.6.6
+    echo 8.8.8.8 | client
+    cat lots_of_ips | client -
+
+Make sure that RabbitMQ, or a compatible AMQP broker, is running before running `worker`. There is currently no way to specify the host and port of the broker, localhost and the default port is assumed.
+
+### REST server
+
+The `server` command starts up a REST server that can be used similarly to the CLI and AMQP interfaces. `server` uses `rackup` to start the server, so by default it will run in WEBrick on port 9292. You can pass any `rackup` options to the `server` command, so if you want to run it with Thin on port 1337 run
+
+    server --server thin --port 1337
+    
+To look up an IP address you can access `/cities` and pass the IP address as a parameter:
+
+    curl 'http://localhost:9292/cities?ip=8.8.8.8'
+    
+The result is always JSON.
+
+The server logs can be found in `tmp/logs/production.log`.
