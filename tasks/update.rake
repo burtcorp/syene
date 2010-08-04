@@ -8,13 +8,12 @@ task :default do
   cities_collection = Mongo::Connection.new.db('geo').collection('cities')
   cities_collection.create_index([['location', Mongo::GEO2D]])
   
-  Syene::Updater.new(:url => cities_url, :collection => cities_collection).import!
+  Syene::Updater.new(:url => cities_url, :collection => cities_collection).update!
 end
 
 desc 'Download the latest GeoIP lite database'
 task :geoip do
   url = 'http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz'
-  command = %(curl #{url} | gzip -d > tmp/GeoLiteCity.dat)
-  puts command
+  command = %(curl --silent #{url} | gzip -d > tmp/GeoLiteCity.dat)
   system command
 end
