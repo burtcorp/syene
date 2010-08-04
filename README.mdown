@@ -51,3 +51,7 @@ To look up an IP address you can access `/cities` and pass the IP address as a p
 The result is always JSON.
 
 The server logs can be found in `tmp/logs/production.log`.
+
+## Syene?
+
+Syene was the city in Greek Egypt where Eratosthenes measured the circumference of the Earth.
