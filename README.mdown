@@ -5,7 +5,7 @@ Syene is a geo location service that can map an IP address to a location.
 ## Installation
 
 1. `gem install bundler`
-- Install `libgeoip` (`brew install geoip`, or see http://www.maxmind.com/app/c)
+- Install `libgeoip` (`brew install geoip`, `apt-get install libgeoip-dev`, or see http://www.maxmind.com/app/c)
 - `bundle install`
 - `rake spec`
 - `rake update:geoip`
