@@ -56,6 +56,10 @@ dependencies:
     group: 
     - :default
     version: ">= 0"
+  capistrano: 
+    group: 
+    - :development
+    version: ">= 0"
   shotgun: 
     group: 
     - :development
@@ -71,6 +75,18 @@ specs:
     version: 1.0.4
 - bson_ext: 
     version: 1.0.4
+- highline: 
+    version: 1.6.1
+- net-ssh: 
+    version: 2.0.23
+- net-scp: 
+    version: 1.0.2
+- net-sftp: 
+    version: 2.0.4
+- net-ssh-gateway: 
+    version: 1.0.1
+- capistrano: 
+    version: 2.5.19
 - daemons: 
     version: 1.1.0
 - geoip-c: 
@@ -78,9 +94,9 @@ specs:
 - immutable_struct: 
     version: 1.0.0
 - json: 
-    version: 1.4.3
+    version: 1.4.6
 - mongo: 
-    version: 1.0.6
+    version: 1.0.7
 - rack: 
     version: 1.2.1
 - rack-test: 
@@ -95,7 +111,7 @@ specs:
     version: 1.2.7
 - zipruby: 
     version: 0.3.6
-hash: cb90efeb8028c19b4ed85fde839df777a66c8ea7
+hash: 0445452bcbdf392dcf496f104d28d9d634f63d98
 sources: 
 - Rubygems: 
     uri: http://gemcutter.org
