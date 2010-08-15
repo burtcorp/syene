@@ -18,7 +18,7 @@ require 'syene/lookup'
 
 
 cities_collection = Mongo::Connection.new.db('geo').collection('cities')
-geo_ip = GeoIP::City.new(File.expand_path('../../tmp/GeoLiteCity.dat', __FILE__))
+geo_ip = GeoIP::City.new(File.expand_path('../../tmp/GeoIPCity.dat', __FILE__))
 lookup = Syene::Lookup.new(:collection => cities_collection, :geo_ip => geo_ip)
 
 Signal.trap('INT')  { AMQP.stop { EM.stop } }
