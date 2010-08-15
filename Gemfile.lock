@@ -1,6 +1,6 @@
 --- 
 dependencies: 
-  bson_ext: 
+  mongo: 
     group: 
     - :default
     version: ">= 0"
@@ -8,7 +8,7 @@ dependencies:
     group: 
     - :default
     version: ">= 0"
-  mongo: 
+  bson_ext: 
     group: 
     - :default
     version: ">= 0"
@@ -24,7 +24,7 @@ dependencies:
     group: 
     - :test
     version: ">= 0"
-  geoip-c: 
+  thin: 
     group: 
     - :default
     version: ">= 0"
@@ -32,11 +32,11 @@ dependencies:
     group: 
     - :default
     version: ">= 0"
-  thin: 
+  geoip-c: 
     group: 
-    - :development
+    - :default
     version: ">= 0"
-  sinatra: 
+  eventmachine: 
     group: 
     - :default
     version: ">= 0"
@@ -44,7 +44,7 @@ dependencies:
     group: 
     - :default
     version: ">= 0"
-  eventmachine: 
+  sinatra: 
     group: 
     - :default
     version: ">= 0"
@@ -111,7 +111,7 @@ specs:
     version: 1.2.7
 - zipruby: 
     version: 0.3.6
-hash: 0445452bcbdf392dcf496f104d28d9d634f63d98
+hash: 1c3004c1100b9195cd06a34926d6a70865aab6c4
 sources: 
 - Rubygems: 
     uri: http://gemcutter.org

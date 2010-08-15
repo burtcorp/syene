@@ -16,13 +16,9 @@ gem 'amqp'
 
 gem 'rack'
 gem 'sinatra'
-
-group :production do
-  gem 'thin'
-end
+gem 'thin'
 
 group :development do
-  gem 'thin'
   gem 'shotgun'
   gem 'capistrano'
 end
