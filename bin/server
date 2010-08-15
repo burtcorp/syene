@@ -2,5 +2,5 @@
 
 cd `dirname $0`/..
 
-bundle exec rackup --env production --server thin --port 41116 config.ru $*
+bundle exec thin start --environment production --port 41116 --rackup config.ru
 
