@@ -8,7 +8,9 @@ module Syene
     :ascii_name,
     :location,
     :population,
-    :country_code
+    :country_code,
+    :country_name,
+    :region
   )
   end
 end
