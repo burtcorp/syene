@@ -19,7 +19,8 @@ module Syene
         :downloader => @downloader,
         :url => 'http://www.example.com/cities.zip',
         :tmp_dir => @tmp_dir,
-        :collection => @collection
+        :collection => @collection,
+        :target => :cities
       )
       @zip_buffer = Zip::Archive.open_buffer(Zip::CREATE) do |archive|
         archive.add_buffer('cities.txt', 'data!')
