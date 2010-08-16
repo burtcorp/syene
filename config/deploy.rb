@@ -20,12 +20,12 @@ after 'deploy:update_code', 'custom:service_config'
 
 namespace :deploy do
   task :start, :roles => [:app] do
-    run 'sudo service syene start'
+    run "sudo service #{application} start"
   end
 
   task :stop, :roles => [:app] do
     # silently ignore if the service is not running
-    run 'service syene status | grep running && sudo service syene stop || :'
+    run "service #{application} status | grep running && sudo service #{application} stop || :"
   end
 
   task :restart, :roles => [:app] do
@@ -56,14 +56,14 @@ namespace :custom do
     run "mkdir -p #{shared_path}/log && mkdir -p #{release_path}/tmp && ln -nfs #{shared_path}/log #{release_path}/tmp/log"
 
     # create and link in a shared directory for bundled gems
-    run "mkdir -p #{shared_path}/bundle && ln -nfs #{shared_path}/bundle #{release_path}/.bundle"
+    run "mkdir -p #{shared_path}/bundle #{release_path}/vendor && ln -nfs #{shared_path}/bundle #{release_path}/.bundle && ln -nfs #{shared_path}/bundle #{release_path}/vendor/bundle"
     
-    run "ln -nfs #{shared_path}/geoip/GeoIPCity.dat #{release_path}/tmp/GeoIPCity.dat"
+    run "ln -nfs /mnt/data/geoip/GeoIPCity.dat #{release_path}/tmp/GeoIPCity.dat"
   end
   
   desc 'Run "bundle install"'
   task :bundle, :roles => [:app] do
-    run "cd #{release_path} && bundle install --without test development"
+    run "cd #{release_path} && bundle install vendor/bundle --without test development"
   end
   
   desc 'Runs "rake update"'
