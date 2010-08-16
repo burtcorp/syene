@@ -12,7 +12,7 @@ ssh_options[:forward_agent] = true
 set :scm, 'git'
 set :repository, "git@github.com:burtcorp/#{application}.git"
 set :deploy_via, :remote_cache
-set :deploy_to, "/home/burt/apps/#{application}"
+set :deploy_to, "/mnt/data/apps/#{application}"
 
 after 'deploy:update_code', 'custom:symlinks'
 after 'deploy:update_code', 'custom:bundle'
