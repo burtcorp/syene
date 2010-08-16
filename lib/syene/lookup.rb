@@ -14,12 +14,13 @@ module Syene
       geo_ip_result = @geo_ip.look_up(ip)
       
       if geo_ip_result
-        city = symbolize_keys(@collection.find_one(:location => {'$near' => [geo_ip_result[:latitude], geo_ip_result[:longitude]]}))
+        location = [geo_ip_result[:latitude], geo_ip_result[:longitude]]
+        
+        city = symbolize_keys(@collection.find_one(:location => {'$near' => location}))
         
         if city
           # the GeoIP lat/lng is more accurate
-          city[:latitude]     = geo_ip_result[:latitude]
-          city[:longitude]    = geo_ip_result[:longitude]
+          city[:location] = location
 
           # fall back on the GeoIP region and country name if necessary
           city[:region]       ||= geo_ip_result[:region]

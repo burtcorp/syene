@@ -37,10 +37,9 @@ module Syene
       
       it 'returns the latitude and longitude from the GeoIP database' do
         @geo_ip.stub(:look_up).and_return(:latitude => 1, :longitude => 2)
-        @collection.stub(:find_one).with(:location => {'$near' => [1, 2]}).and_return(:name => 'Gotham City', :latitude => -1, :longitude => -2)
+        @collection.stub(:find_one).with(:location => {'$near' => [1, 2]}).and_return(:name => 'Gotham City', :location => [-1, -2])
         city = @lookup.ip_lookup('8.8.8.8')
-        city[:latitude].should == 1
-        city[:longitude].should == 2
+        city[:location].should == [1, 2]
       end
 
       it 'returns the region from the GeoIP database if none exist in the city data' do
