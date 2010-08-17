@@ -17,6 +17,7 @@ set :deploy_to, "/mnt/data/apps/#{application}"
 after 'deploy:update_code', 'custom:symlinks'
 after 'deploy:update_code', 'custom:bundle'
 after 'deploy:update_code', 'custom:service_config'
+after 'deploy:update_code', 'custom:fix_permissions'
 
 namespace :deploy do
   task :start, :roles => [:app] do
@@ -69,5 +70,12 @@ namespace :custom do
   desc 'Runs "rake update"'
   task :update_cities, :roles => [:app] do
     run "cd #{release_path} && rake update"
+  end
+  
+  desc 'Makes sure the burt & ubuntu users can read & write the right files'
+  task :fix_permissions, :roles => [:app] do
+    run "sudo chown -R burt:app #{deploy_to}"
+    run "sudo chmod g+rw #{deploy_to}/releases"
+    run "sudo chmod -R g+rw #{shared_path} #{shared_path}/cached-copy/.git"
   end
 end
