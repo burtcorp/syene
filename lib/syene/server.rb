@@ -28,7 +28,7 @@ module Syene
       content_type :json
     end
     
-    get '/cities' do
+    get '/city' do
       case city_request_type(params)
       when :ip
         result = settings.lookup.ip_lookup(params[:ip])
