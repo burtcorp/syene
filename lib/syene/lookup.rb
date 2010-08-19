@@ -11,7 +11,7 @@ module Syene
     end
     
     def ip_lookup(ip)
-      geo_ip_result = @geo_ip.look_up(ip)
+      geo_ip_result = @geo_ip.look_up(clean_ip(ip))
       
       if geo_ip_result
         location = [geo_ip_result[:latitude], geo_ip_result[:longitude]]
@@ -37,6 +37,21 @@ module Syene
     end
     
   private
+  
+    def clean_ip(ip)
+      ip = ip.strip
+      parts = ip.split('.')
+      if parts.size == 4
+        case parts.first
+        when '0', '10', '127', '169', '172', '192', '198', '203', '224', '240'
+          raise ArgumentError, "Private or internal IP: #{ip}"
+        else
+          ip
+        end
+      else
+        raise ArgumentError, "Malformed IP: #{ip}"
+      end
+    end
     
     def clean_position(lat, lng)
       [clean_numeric(lat), clean_numeric(lng)]

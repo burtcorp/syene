@@ -61,6 +61,16 @@ module Syene
         city = @lookup.ip_lookup('8.8.8.8')
         city[:country_name].should == 'Very far away'
       end
+      
+      it 'complains if the IP is malformed' do
+        expect { @lookup.ip_lookup('8.8.8') }.to raise_error(ArgumentError)
+        expect { @lookup.ip_lookup('apa') }.to raise_error(ArgumentError)
+      end
+      
+      it 'complains if the IP is internal or private' do
+        expect { @lookup.ip_lookup('127.0.0.1') }.to raise_error(ArgumentError)
+        expect { @lookup.ip_lookup('192.168.3.5') }.to raise_error(ArgumentError)
+      end
     end
     
     describe '#position_lookup' do
