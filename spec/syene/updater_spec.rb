@@ -55,9 +55,9 @@ module Syene
         end
         @zip_io = StringIO.new(@zip_buffer, 'r')
         @downloader.stub(:open).and_yield(@zip_io)
-        @collection.should_receive(:save).with({:_id => '3039163', :name => 'Sant Julià de Lòria', :ascii_name => 'Sant Julia de Loria', :location => [42.46372, 1.49129], :population => 8022, :country_code => 'AD', :country_name => nil, :region => nil})
-        @collection.should_receive(:save).with({:_id => '3039604', :name => 'Pas de la Casa',      :ascii_name => 'Pas de la Casa',      :location => [42.54277, 1.73361], :population => 2363, :country_code => 'AD', :country_name => nil, :region => nil})
-        @collection.should_receive(:save).with({:_id => '3039678', :name => 'Ordino',              :ascii_name => 'Ordino',              :location => [42.55623, 1.53319], :population => 3066, :country_code => 'AD', :country_name => nil, :region => nil})
+        @collection.should_receive(:save).with({:_id => '3039163', :name => 'Sant Julià de Lòria', :ascii_name => 'Sant Julia de Loria', :location => [42.46372, 1.49129], :population => 8022, :country_code => 'AD', :country_name => 'Andorra', :region => nil})
+        @collection.should_receive(:save).with({:_id => '3039604', :name => 'Pas de la Casa',      :ascii_name => 'Pas de la Casa',      :location => [42.54277, 1.73361], :population => 2363, :country_code => 'AD', :country_name => 'Andorra', :region => nil})
+        @collection.should_receive(:save).with({:_id => '3039678', :name => 'Ordino',              :ascii_name => 'Ordino',              :location => [42.55623, 1.53319], :population => 3066, :country_code => 'AD', :country_name => 'Andorra', :region => nil})
         @updater.update!
       end
     end

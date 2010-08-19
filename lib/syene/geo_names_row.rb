@@ -1,3 +1,7 @@
+# encoding: utf-8
+
+require 'syene/country_names'
+
 
 module Syene
   class GeoNamesRow < ImmutableStruct.new(
@@ -32,10 +36,11 @@ module Syene
 
     def to_city
       City.new(self.to_h.merge(
-        :_id        => self[:geonameid],
-        :location   => location, 
-        :population => population,
-        :ascii_name => self[:asciiname]
+        :_id          => self[:geonameid],
+        :location     => location, 
+        :population   => population,
+        :ascii_name   => self[:asciiname],
+        :country_name => COUNTRY_NAMES[self[:country_code]]
       ))
     end
     
