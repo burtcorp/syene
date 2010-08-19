@@ -29,7 +29,7 @@ module Syene
       end
       
       it 'returns a hash with symbol keys' do
-        @geo_ip.stub(:look_up).and_return({})
+        @geo_ip.stub(:look_up).and_return({:latitude => 3, :longitude => 5})
         @collection.stub(:find_one).and_return({'name' => 'Macondo'})
         city = @lookup.ip_lookup('8.8.8.8')
         city.should have_key(:name)
@@ -43,7 +43,7 @@ module Syene
       end
 
       it 'returns the region from the GeoIP database if none exist in the city data' do
-        @geo_ip.stub(:look_up).and_return(:region => 'Far, far away')
+        @geo_ip.stub(:look_up).and_return(:region => 'Far, far away', :latitude => 3, :longitude => 5)
         @collection.stub(:find_one).and_return(:name => 'Gotham City')
         city = @lookup.ip_lookup('8.8.8.8')
         city[:region].should == 'Far, far away'
@@ -53,13 +53,31 @@ module Syene
       end
 
       it 'returns the country name from the GeoIP database if none exist in the city data' do
-        @geo_ip.stub(:look_up).and_return(:country_name => 'Far, far away')
+        @geo_ip.stub(:look_up).and_return(:country_name => 'Far, far away', :latitude => 3, :longitude => 5)
         @collection.stub(:find_one).and_return(:name => 'Gotham City')
         city = @lookup.ip_lookup('8.8.8.8')
         city[:country_name].should == 'Far, far away'
         @collection.stub(:find_one).and_return(:name => 'Gotham City', :country_name => 'Very far away')
         city = @lookup.ip_lookup('8.8.8.8')
         city[:country_name].should == 'Very far away'
+      end
+    end
+    
+    describe '#position_lookup' do
+      it 'looks up the closest city to the given latitude/longitude' do
+        @collection.stub(:find_one).with(:location => {'$near' => [1, 2]}).and_return(:name => 'Gotham City')
+        city = @lookup.position_lookup(1, 2)
+        city[:name].should == 'Gotham City'
+      end
+      
+      it 'returns the given latitude/longitude, not the city\'s' do
+        @collection.stub(:find_one).with(:location => {'$near' => [1, 2]}).and_return(:name => 'Gotham City', :location => [-1, -2])
+        city = @lookup.position_lookup(1, 2)
+        city[:location].should == [1, 2]
+      end
+      
+      it 'complains if the latitude or longitude is not numeric' do
+        expect { @lookup.position_lookup('1', 'apa') }.to raise_error(ArgumentError)
       end
     end
   end

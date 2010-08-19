@@ -34,11 +34,11 @@ module Syene
       last_response.should be_ok
     end
     
-    it 'responds with Bad Request if no ip parameter is given' do
+    it 'responds with Bad Request if the right parameters aren\'t given' do
       get '/cities'
       last_response.status.should == 400
     end
-    
+
     it 'responds with JSON' do
       get '/cities', :ip => '8.8.8.8'
       last_response.content_type.should == 'application/json'
@@ -50,10 +50,22 @@ module Syene
       last_response.status.should == 404
     end
     
-    it 'responds with a city' do
+    it 'responds with a city when given an IP' do
       @lookup.stub(:ip_lookup).with('8.8.8.8').and_return(:name => 'Metropolis')
       get '/cities', :ip => '8.8.8.8'
       last_response.body.should == '{"name":"Metropolis"}'
+    end
+
+    it 'responds with a city when given a latitude and longitude' do
+      @lookup.stub(:position_lookup).with('22.33', '44.55').and_return(:name => 'Metropolis')
+      get '/cities', :latitude => '22.33', :longitude => '44.55'
+      last_response.body.should == '{"name":"Metropolis"}'
+    end
+    
+    it 'responds with Bad Request if a malformed latitude or longitude is given' do
+      @lookup.stub(:position_lookup).with('apa', '3.2').and_raise(ArgumentError.new('Bad!'))
+      get '/cities', :latitude => 'apa', :longitude => '3.2'
+      last_response.status.should == 400
     end
   end
 end

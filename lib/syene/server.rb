@@ -29,20 +29,39 @@ module Syene
     end
     
     get '/cities' do
-      if params[:ip]
+      case city_request_type(params)
+      when :ip
         result = settings.lookup.ip_lookup(params[:ip])
-        if result
-          result.delete(:_id)
-          result.to_json
-        else
-          status 404
+      when :position
+        begin
+          result = settings.lookup.position_lookup(params[:latitude], params[:longitude])
+        rescue ArgumentError => e
+          throw :halt, [400, {:error => 'Bad Request', :message => e.message}.to_json]
         end
       else
-        status 400
+        throw :halt, [400, {:error => 'Bad Request', :message => 'Neither position or IP given'}.to_json]
+      end
+      
+      if result
+        result.delete(:_id)
+        result.to_json
+      else
+        status 404
+        {:error => 'Not Found', :message => 'No city found'}.to_json
       end
     end
     
   private
+  
+    def city_request_type(params)
+      if params[:latitude] && params[:longitude]
+        :position
+      elsif params[:ip]
+        :ip
+      else
+        nil
+      end
+    end
   
     def self.lookup
       @lookup ||= begin
