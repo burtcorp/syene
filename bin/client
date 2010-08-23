@@ -12,6 +12,7 @@ Bundler.setup(:default, :production)
 require 'eventmachine'
 require 'mq'
 require 'json'
+require 'set'
 require 'syene/utils'
 require 'syene/city'
 
@@ -39,7 +40,7 @@ AMQP.start do
     waiting.delete(query)
     city = if msg == 'null' then nil else Syene::City.new(symbolize_keys(JSON.parse(msg))) end
     if city
-      puts '%s: %s, %s' % [query, city.name, city.country_code]
+      puts '%s: %s, %s' % [query, city.name, city.country_name]
     else
       puts '%s: (not found)' % query
     end
