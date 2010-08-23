@@ -42,8 +42,7 @@ module Syene
       ip = ip.strip
       parts = ip.split('.')
       if parts.size == 4
-        case parts.first
-        when '0', '10', '127', '169', '172', '192', '198', '203', '224', '240'
+        if private_ip?(*parts)
           raise ArgumentError, "Private or internal IP: #{ip}"
         else
           ip
@@ -51,6 +50,13 @@ module Syene
       else
         raise ArgumentError, "Malformed IP: #{ip}"
       end
+    end
+    
+    def private_ip?(*ip)
+      %w(0 10 127).include?(ip.first) ||
+      ip[0..1] == %w(192 168) ||
+      (ip[0] == '172' && (16..31).include?(ip[1].to_i)) ||
+      (ip[0..1] == %w(169 254) && (1..254).include?(ip[2].to_i))
     end
     
     def clean_position(lat, lng)

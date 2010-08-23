@@ -70,6 +70,9 @@ module Syene
       it 'complains if the IP is internal or private' do
         expect { @lookup.ip_lookup('127.0.0.1') }.to raise_error(ArgumentError)
         expect { @lookup.ip_lookup('192.168.3.5') }.to raise_error(ArgumentError)
+        expect { @lookup.ip_lookup('169.254.3.4') }.to raise_error(ArgumentError)
+        expect { @lookup.ip_lookup('192.1.3.5') }.to_not raise_error(ArgumentError)
+        expect { @lookup.ip_lookup('169.254.255.4') }.to_not raise_error(ArgumentError)
       end
     end
     
