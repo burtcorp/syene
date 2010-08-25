@@ -2,5 +2,5 @@
 
 cd `dirname $0`/..
 
-bundle exec thin start --environment production --port 41116 --rackup config.ru
+rvm -S bundle exec thin start --environment production --port 41116 --rackup config.ru
 
