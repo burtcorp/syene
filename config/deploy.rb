@@ -59,12 +59,12 @@ namespace :custom do
     # create and link in a shared directory for bundled gems
     run "mkdir -p #{shared_path}/bundle #{release_path}/vendor && ln -nfs #{shared_path}/bundle #{release_path}/.bundle && ln -nfs #{shared_path}/bundle #{release_path}/vendor/bundle"
     
-    run "ln -nfs /mnt/data/geoip/GeoIPCity.dat #{release_path}/tmp/GeoIPCity.dat"
+    run "ln -nfs /usr/share/GeoIP/GeoIPCity.dat #{release_path}/tmp/GeoIPCity.dat"
   end
   
   desc 'Run "bundle install"'
   task :bundle, :roles => [:app] do
-    run "cd #{release_path} && bundle install vendor/bundle --without test development"
+    run "cd #{release_path} && rvm -S bundle install vendor/bundle --without test development"
   end
   
   desc 'Runs "rake update"'
