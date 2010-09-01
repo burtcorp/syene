@@ -6,7 +6,7 @@ module Syene
     include Utils
     
     CITIES_COLLECTION_NAME = 'cities'
-    MAX_OVERRIDE_DISTANCE  = 0.05
+    MAX_OVERRIDE_DISTANCE  = 5.0/111 # around five kilometers (depending on latitude)
     
     def initialize(options={})
       @geo_ip = options[:geo_ip]
