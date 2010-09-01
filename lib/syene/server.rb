@@ -67,7 +67,7 @@ module Syene
       @lookup ||= begin
         geo_db = Mongo::Connection.new.db('geo')
         geo_ip = GeoIP::City.new(File.expand_path('../../../tmp/GeoIPCity.dat', __FILE__))
-        Lookup.new(:collection => geo_db, :geo_ip => geo_ip)
+        Lookup.new(:db => geo_db, :geo_ip => geo_ip)
       end
     end
     

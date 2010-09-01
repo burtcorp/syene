@@ -99,6 +99,17 @@ module Syene
       it 'complains if the latitude or longitude is not numeric' do
         expect { @lookup.position_lookup('1', 'apa') }.to raise_error(ArgumentError)
       end
+      
+      it 'returns the largest city within 0.1 points of the closest city' do
+        cities = [
+          {:dis => 0.001, :obj => {:name => 'A', :population => 1}},
+          {:dis => 0.002, :obj => {:name => 'B', :population => 2}},
+          {:dis => 0.103, :obj => {:name => 'C', :population => 3}}
+        ]
+        @db.should_receive(:command).and_return('results' => cities)
+        city = @lookup.position_lookup(1, 2)
+        city[:name].should == 'B'
+      end
     end
   end
 end
