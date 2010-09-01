@@ -5,9 +5,12 @@ module Syene
   class Lookup
     include Utils
     
+    CITIES_COLLECTION_NAME = 'cities'
+    MAX_OVERRIDE_DISTANCE  = 0.05
+    
     def initialize(options={})
-      @collection = options[:collection]
-      @geo_ip     = options[:geo_ip]
+      @geo_ip = options[:geo_ip]
+      @db     = options[:db]
     end
     
     def ip_lookup(ip)
@@ -31,9 +34,29 @@ module Syene
     end
 
     def position_lookup(*location)
-      city = symbolize_keys(@collection.find_one(:location => {'$near' => clean_position(*location)}))
-      city[:location] = location if city
-      city
+      location = clean_position(*location)
+      
+      command_selector = BSON::OrderedHash[:geoNear,CITIES_COLLECTION_NAME,:near,location,:num,10]
+      
+      response = @db.command(command_selector)
+      
+      results = if response then response.fetch('results', []) else [] end
+      
+      if results.empty?
+        nil
+      else
+        if results.size > 1
+          results  = results.map { |r| symbolize_keys(r) }
+          closest  = results.first
+          results  = results.select { |r| (r[:dis] - closest[:dis]).abs < MAX_OVERRIDE_DISTANCE }
+          selected = results.sort { |a, b| a[:obj][:population] <=> b[:obj][:population] }.last
+        else
+          selected = symbolize_keys(results.first)
+        end
+        city = selected[:obj]
+        city[:location] = location
+        city
+      end
     end
     
   private
@@ -66,7 +89,7 @@ module Syene
     def clean_numeric(n)
       if Numeric === n
         n
-      elsif /^([\d.]+)$/ === n.to_s.strip
+      elsif /^(-?[\d.]+)$/ === n.to_s.strip
         n.to_f
       else
         raise ArgumentError, "Not numeric: #{n}"
