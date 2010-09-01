@@ -99,6 +99,10 @@ module Syene
       it 'complains if the latitude or longitude is not numeric' do
         expect { @lookup.position_lookup('1', 'apa') }.to raise_error(ArgumentError)
       end
+
+      it 'handles negative longitudes' do
+        expect { @lookup.position_lookup('1', '-3') }.to_not raise_error(ArgumentError)
+      end
       
       it 'returns the largest city within 0.1 points of the closest city' do
         cities = [

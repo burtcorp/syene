@@ -89,7 +89,7 @@ module Syene
     def clean_numeric(n)
       if Numeric === n
         n
-      elsif /^([\d.]+)$/ === n.to_s.strip
+      elsif /^(-?[\d.]+)$/ === n.to_s.strip
         n.to_f
       else
         raise ArgumentError, "Not numeric: #{n}"
