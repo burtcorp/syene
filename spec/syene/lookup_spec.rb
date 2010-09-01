@@ -6,9 +6,11 @@ require File.expand_path('../../spec_helper', __FILE__)
 module Syene
   describe Lookup do
     before do
-      @collection = mock()
-      @geo_ip = mock()
-      @lookup = Lookup.new(:collection => @collection, :geo_ip => @geo_ip)
+      @collection = double()
+      @db = double()
+      @db.stub(:collection).with('cities').and_return(@collection)
+      @geo_ip = double()
+      @lookup = Lookup.new(:db => @db, :geo_ip => @geo_ip)
     end
 
     describe '#ip_lookup' do

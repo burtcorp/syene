@@ -6,8 +6,9 @@ module Syene
     include Utils
     
     def initialize(options={})
-      @collection = options[:collection]
       @geo_ip     = options[:geo_ip]
+      @db         = options[:db]
+      @collection = @db.collection('cities')
     end
     
     def ip_lookup(ip)
