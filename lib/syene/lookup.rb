@@ -6,7 +6,7 @@ module Syene
     include Utils
     
     CITIES_COLLECTION_NAME = 'cities'
-    MAX_OVERRIDE_DISTANCE  = 0.06 # more or less arbitrary, it makes Majorna resolve to Göteborg
+    MAX_OVERRIDE_DISTANCE  = 0.05
     
     def initialize(options={})
       @geo_ip = options[:geo_ip]
@@ -36,7 +36,7 @@ module Syene
     def position_lookup(*location)
       location = clean_position(*location)
       
-      command_selector = BSON::OrderedHash[:geoNear,CITIES_COLLECTION_NAME,:near,location,:num,3]
+      command_selector = BSON::OrderedHash[:geoNear,CITIES_COLLECTION_NAME,:near,location,:num,10]
       
       response = @db.command(command_selector)
       
