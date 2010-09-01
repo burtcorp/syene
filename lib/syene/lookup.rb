@@ -5,10 +5,11 @@ module Syene
   class Lookup
     include Utils
     
+    CITIES_COLLECTION_NAME = 'cities'
+    
     def initialize(options={})
-      @geo_ip     = options[:geo_ip]
-      @db         = options[:db]
-      @collection = @db.collection('cities')
+      @geo_ip = options[:geo_ip]
+      @db     = options[:db]
     end
     
     def ip_lookup(ip)
@@ -32,9 +33,19 @@ module Syene
     end
 
     def position_lookup(*location)
-      city = symbolize_keys(@collection.find_one(:location => {'$near' => clean_position(*location)}))
-      city[:location] = location if city
-      city
+      command_selector = BSON::OrderedHash[:geoNear,CITIES_COLLECTION_NAME,:near,clean_position(*location),:num,3]
+      
+      response = @db.command(command_selector)
+      
+      results = if response then response.fetch('results', []) else [] end
+      
+      if results.empty?
+        nil
+      else
+        city = symbolize_keys(results.first)[:obj]
+        city[:location] = location
+        city
+      end
     end
     
   private
