@@ -69,7 +69,7 @@ namespace :custom do
   
   desc 'Runs "rake update"'
   task :update_cities, :roles => [:app] do
-    run "cd #{release_path} && rake update"
+    run "cd #{current_path} && rvm default rake update"
   end
   
   desc 'Makes sure the burt & ubuntu users can read & write the right files'
