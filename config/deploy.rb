@@ -64,7 +64,7 @@ namespace :custom do
   
   desc 'Run "bundle install"'
   task :bundle, :roles => [:app] do
-    run "cd #{release_path} && rvm -S bundle install vendor/bundle --without test development"
+    run "cd #{release_path} && (rvm default -S bundle check || rvm default -S bundle install vendor/bundle --without test development)"
   end
   
   desc 'Runs "rake update"'
