@@ -51,6 +51,7 @@ module Syene
 3039163	Sant Julià de Lòria	Sant Julia de Loria	San Julia,San Julià,San-Dzhulija-de-Lorija,San-Khulija-de-Lorija,Sant Julia de Loria,Sant Julià de Lòria,sheng hu li ya-de luo li ya,Сан-Джулия-де-Лория,Сан-Хулия-де-Лория,サン・ジュリア・デ・ロリア教区,圣胡利娅-德洛里亚,圣胡利娅－德洛里亚	42.46372	1.49129	P	PPLA	AD		06				8022		1045	Europe/Andorra	2008-10-15
 3039604	Pas de la Casa	Pas de la Casa	Pas de la Kasa,Пас де ла Каса	42.54277	1.73361	P	PPL	AD		03				2363	2050	2230	Europe/Andorra	2008-06-09
 3039678	Ordino	Ordino	Ordino,ao er di nuo,orudino jiao qu,Ордино,オルディノ教区,奥尔迪诺	42.55623	1.53319	P	PPLA	AD		05				3066		1340	Europe/Andorra	2009-12-11
+6545243	Bayswater	Bayswater		51.51334	-0.18861	P	PPLX	GB		ENG	GLA	P5		17500		37	Europe/London	2010-05-24
           CITIES
         end
         @zip_io = StringIO.new(@zip_buffer, 'r')
@@ -58,6 +59,7 @@ module Syene
         @collection.should_receive(:save).with({:_id => '3039163', :name => 'Sant Julià de Lòria', :ascii_name => 'Sant Julia de Loria', :location => [42.46372, 1.49129], :population => 8022, :country_code => 'AD', :country_name => 'Andorra', :region => nil})
         @collection.should_receive(:save).with({:_id => '3039604', :name => 'Pas de la Casa',      :ascii_name => 'Pas de la Casa',      :location => [42.54277, 1.73361], :population => 2363, :country_code => 'AD', :country_name => 'Andorra', :region => nil})
         @collection.should_receive(:save).with({:_id => '3039678', :name => 'Ordino',              :ascii_name => 'Ordino',              :location => [42.55623, 1.53319], :population => 3066, :country_code => 'AD', :country_name => 'Andorra', :region => nil})
+        @collection.should_not_receive(:save).with(hash_including(:_id => '6545243')) # Bayswater isn't a city, but a "section of populated place" (PPLX)
         @updater.update!
       end
     end

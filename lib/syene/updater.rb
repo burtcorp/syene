@@ -40,7 +40,7 @@ module Syene
     
     def cities
       GeoNamesRow.parse(@target_db_path) do |row|
-        @collection.save(row.to_city.to_h)
+        @collection.save(row.to_city.to_h) unless row.feature_code == 'PPLX'
       end
     end
     
