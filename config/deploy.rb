@@ -7,7 +7,6 @@ require 'burt/capistrano/git_check'
 require 'burt/capistrano/defaults'
 
 after 'deploy:update_code', 'custom:symlinks'
-after 'deploy:update_code', 'custom:bundle'
 after 'deploy:update_code', 'custom:service_config'
 after 'deploy:update_code', 'custom:fix_permissions'
 
@@ -49,11 +48,6 @@ namespace :custom do
     run "mkdir -p #{shared_path}/log && mkdir -p #{release_path}/tmp && ln -nfs #{shared_path}/log #{release_path}/tmp/log"
 
     run "ln -nfs /usr/share/GeoIP/GeoIP.dat #{release_path}/tmp/GeoIPCity.dat"
-  end
-  
-  desc 'Run "bundle install"'
-  task :bundle, :roles => [:app] do
-    run "cd #{release_path} && (rvm default -S bundle check || rvm default -S bundle install vendor/bundle --without test development)"
   end
   
   desc 'Runs "rake update"'
