@@ -1,3 +1,12 @@
+GIT
+  remote: git@github.com:burtcorp/burt_common.git
+  revision: 2bde37ef9a36941a490257aeb18cb2bb69b37479
+  specs:
+    burt_common (1.0.0)
+      guava-rb (~> 1.0.9)
+      logging (~> 1.5.0)
+      toadhopper (~> 1.1.0)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -16,9 +25,13 @@ GEM
     daemons (1.1.0)
     eventmachine (0.12.10)
     geoip-c (0.7.0)
+    guava-rb (1.0.9)
     highline (1.6.1)
     immutable_struct (1.0.0)
     json (1.4.6)
+    little-plugger (1.1.2)
+    logging (1.5.2)
+      little-plugger (>= 1.1.2)
     mongo (1.0.7)
       bson (>= 1.0.4)
     net-scp (1.0.3)
@@ -41,6 +54,7 @@ GEM
       daemons (>= 1.0.9)
       eventmachine (>= 0.12.6)
       rack (>= 1.0.0)
+    toadhopper (1.1)
     zipruby (0.3.6)
 
 PLATFORMS
@@ -49,6 +63,7 @@ PLATFORMS
 DEPENDENCIES
   amqp
   bson_ext
+  burt_common!
   capistrano
   capistrano-ext
   eventmachine

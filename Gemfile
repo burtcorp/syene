@@ -22,6 +22,7 @@ group :development do
   gem 'shotgun'
   gem 'capistrano'
   gem 'capistrano-ext'
+  gem 'burt_common', :git => 'git@github.com:burtcorp/burt_common.git'
 end
 
 group :test do

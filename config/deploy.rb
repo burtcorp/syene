@@ -1,18 +1,10 @@
-# Application
 set :application, 'syene'
+set :stages, %w(staging production)
 
-# Settings
-default_run_options[:pty] = true
-set :use_sudo, false
-
-# SSH Options
-ssh_options[:forward_agent] = true
-
-# SCM
-set :scm, 'git'
-set :repository, "git@github.com:burtcorp/#{application}.git"
-set :deploy_via, :remote_cache
-set :deploy_to, "/home/burt/apps/#{application}"
+require 'bundler/setup'; Bundler.setup(:development)
+require 'capistrano/ext/multistage'
+require 'burt/capistrano/git_check'
+require 'burt/capistrano/defaults'
 
 after 'deploy:update_code', 'custom:symlinks'
 after 'deploy:update_code', 'custom:bundle'
