@@ -11,6 +11,8 @@ GEM
       net-sftp (>= 2.0.0)
       net-ssh (>= 2.0.14)
       net-ssh-gateway (>= 1.0.0)
+    capistrano-ext (1.2.1)
+      capistrano (>= 1.0.0)
     daemons (1.1.0)
     eventmachine (0.12.10)
     geoip-c (0.7.0)
@@ -48,6 +50,7 @@ DEPENDENCIES
   amqp
   bson_ext
   capistrano
+  capistrano-ext
   eventmachine
   geoip-c
   immutable_struct

@@ -21,6 +21,7 @@ gem 'thin'
 group :development do
   gem 'shotgun'
   gem 'capistrano'
+  gem 'capistrano-ext'
 end
 
 group :test do

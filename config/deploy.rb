@@ -12,7 +12,7 @@ ssh_options[:forward_agent] = true
 set :scm, 'git'
 set :repository, "git@github.com:burtcorp/#{application}.git"
 set :deploy_via, :remote_cache
-set :deploy_to, "/mnt/data/apps/#{application}"
+set :deploy_to, "/home/burt/apps/#{application}"
 
 after 'deploy:update_code', 'custom:symlinks'
 after 'deploy:update_code', 'custom:bundle'
@@ -74,7 +74,7 @@ namespace :custom do
   
   desc 'Makes sure the burt & ubuntu users can read & write the right files'
   task :fix_permissions, :roles => [:app] do
-    run "sudo chown -R burt:app #{deploy_to}"
+    run "sudo chown -R burt:burt #{deploy_to}"
     run "sudo chmod g+rw #{deploy_to}/releases"
     run "sudo chmod -R g+rw #{shared_path} #{shared_path}/cached-copy/.git"
   end
