@@ -1,6 +1,7 @@
-#!/bin/sh
+#!/bin/bash
 
 cd `dirname $0`/..
+source /etc/profile
+source .rvmrc
 
 bundle exec thin start --environment production --port 41116 --rackup config.ru
-
