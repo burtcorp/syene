@@ -48,10 +48,7 @@ namespace :custom do
     # create and link a shared log directory
     run "mkdir -p #{shared_path}/log && mkdir -p #{release_path}/tmp && ln -nfs #{shared_path}/log #{release_path}/tmp/log"
 
-    # create and link in a shared directory for bundled gems
-    run "mkdir -p #{shared_path}/bundle #{release_path}/vendor && ln -nfs #{shared_path}/bundle #{release_path}/.bundle && ln -nfs #{shared_path}/bundle #{release_path}/vendor/bundle"
-    
-    run "ln -nfs /usr/share/GeoIP/GeoIPCity.dat #{release_path}/tmp/GeoIPCity.dat"
+    run "ln -nfs /usr/share/GeoIP/GeoIP.dat #{release_path}/tmp/GeoIPCity.dat"
   end
   
   desc 'Run "bundle install"'
